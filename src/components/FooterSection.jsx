@@ -1,17 +1,13 @@
 import React from "react";
+import image from "./../assets/Flux_Schnell_A_highly_detailed_and_realistic_scene_of_a_vibran_3 (2).jpeg";
 
 export default function FooterSection() {
-    return (
-        <div>
+    return (<div>
             {/* Video Banner Section */}
             <div className="relative">
-                <video
-                    src="https://videos.pexels.com/video-files/10441577/10441577-hd_1920_1080_25fps.mp4" // Replace this with your actual video file path or URL
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    className="w-full h-[60vh] object-cover"
+                <img
+                    src={image} // Replace this with your actual video file path or URL
+                    className="w-full h-[70vh] object-cover"
                 />
                 <div className="absolute inset-0 bg-black opacity-50"></div>
                 {/* Overlay Content */}
@@ -33,7 +29,7 @@ export default function FooterSection() {
                         <div>
                             <h2 className="text-xl font-bold">Mega City Cab Service</h2>
                             <p className="text-sm text-gray-500 mt-2">
-                                30 Great Peter St, WestMinister, <br />
+                                30 Great Peter St, WestMinister, <br/>
                                 London SW1P 2BJ, United Kingdom
                             </p>
                             {/* Social Media Links */}
@@ -109,6 +105,5 @@ export default function FooterSection() {
                     </div>
                 </div>
             </footer>
-        </div>
-    );
+        </div>);
 }
