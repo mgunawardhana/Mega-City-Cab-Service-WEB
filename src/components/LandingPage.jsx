@@ -17,7 +17,7 @@ export default function LandingPage() {
                     playsInline
                     className="w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-black opacity-80"></div>
+                <div className="absolute inset-0 bg-black opacity-50"></div>
                 {/* Adjust opacity for darkness */}
             </div>
             <div className="absolute inset-0 h-fit">

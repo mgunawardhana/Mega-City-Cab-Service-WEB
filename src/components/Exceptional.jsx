@@ -4,7 +4,7 @@ import { HiOutlinePaperAirplane } from "react-icons/hi";
 import api from "../services/services.js";
 import {CUSTOMER_PROGRESS} from "../services/routes/customerImprovements.js";
 
-export default function ExceptionalHealthcare() {
+export default function Exceptional() {
     const [bestPerformers, setBestPerformers] = useState([]);
     const [currentIndex, setCurrentIndex] = useState(0);
 

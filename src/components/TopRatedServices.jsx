@@ -3,7 +3,7 @@ import api from "../services/services.js";
 import CustomLoader from "./CustomLoader.jsx";
 import { FETCH_ARTICLE_ENDPOINT } from "../services/routes/articleRoute.js";
 //import image from assets
-import image from "./../assets/Leonardo_Phoenix_10_A_highly_detailed_and_realistic_scene_of_a_0 (2).jpg";
+import image from "./../assets/Flux_Schnell_A_highly_detailed_and_realistic_scene_of_a_vibran_2 (4).jpeg";
 
 
 export default function TopRatedServices() {
@@ -47,15 +47,16 @@ export default function TopRatedServices() {
                     ✖
                 </button>
                 <img
-                    src={card.media}
-                    alt={card.title}
-                    className="rounded-lg w-full h-80 object-cover mb-4"
+                    src={card?.media || 'https://via.placeholder.com/300'}
+                    alt={card?.title || 'Default Title'}
+                    className="rounded-lg w-full h-[300px] object-cover mb-4"
                 />
-                <h2 className="text-2xl font-bold mb-4">{card.title}</h2>
-                <p className="text-gray-700">{card.description}</p>
+                <h2 className="text-2xl font-bold mb-4">{card?.title || 'Default Title'}</h2>
+                <p className="text-gray-700">{card?.description || 'Default Description'}</p>
             </div>
         </div>
     );
+
 
 
     const Card = ({ image, heading, ratings, card }) => {
