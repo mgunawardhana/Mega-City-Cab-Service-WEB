@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { HiOutlinePaperAirplane } from "react-icons/hi";
 import api from "../services/services.js";
-import {CUSTOMER_PROGRESS} from "../services/routes/customerImprovements.js";
+import { CUSTOMER_PROGRESS } from "../services/routes/customerImprovements.js";
 
 export default function Exceptional() {
     const [bestPerformers, setBestPerformers] = useState([]);
@@ -11,8 +11,15 @@ export default function Exceptional() {
     const fetchData = async () => {
         try {
             const response = await api.get(CUSTOMER_PROGRESS);
-            console.log("Fetched performers:", response.data.result);
-            setBestPerformers(response.data.result || []);
+            console.log("Fetched Driver Details:", response.data.result);
+            setBestPerformers(
+                response.data.result.map((driver) => ({
+                    firstName: driver.driverFirstName,
+                    lastName: driver.driverLastName,
+                    status: driver.driverStatus,
+                    media: driver.driverProfilePicture,
+                }))
+            );
         } catch (error) {
             console.error("Error fetching data:", error);
         }
@@ -23,18 +30,25 @@ export default function Exceptional() {
     }, []);
 
     const goToPrevious = () => {
-        setCurrentIndex((prevIndex) => (prevIndex === 0 ? bestPerformers.length - 1 : prevIndex - 1));
+        setCurrentIndex((prevIndex) =>
+            prevIndex === 0 ? bestPerformers.length - 1 : prevIndex - 1
+        );
     };
 
     const goToNext = () => {
-        setCurrentIndex((prevIndex) => (prevIndex === bestPerformers.length - 1 ? 0 : prevIndex + 1));
+        setCurrentIndex((prevIndex) =>
+            prevIndex === bestPerformers.length - 1 ? 0 : prevIndex + 1
+        );
     };
 
     return (
         <div className="container mx-auto px-6 py-10">
-            <h2 className="text-4xl font-bold text-center">Embark on a Journey Toward Exceptional Travel.</h2>
+            <h2 className="text-4xl font-bold text-center">
+                Embark on a Journey Toward Exceptional Travel.
+            </h2>
             <p className="text-gray-600 text-center mt-2">
-                Our reliable cab services are strategically located, providing seamless access to premium transportation options and expert drivers.
+                Our reliable cab services are strategically located, providing seamless
+                access to premium transportation options and expert drivers.
             </p>
 
             <div className="flex items-center justify-center mt-8 space-x-4">
@@ -50,7 +64,10 @@ export default function Exceptional() {
                             key={index}
                             className="relative bg-white shadow-lg rounded-lg overflow-hidden flex-shrink-0 w-48 h-64 m-3"
                         >
-                            <HiOutlinePaperAirplane className="absolute top-3 left-3 text-[#ffa502]" size={24}/>
+                            <HiOutlinePaperAirplane
+                                className="absolute top-3 left-3 text-[#ffa502]"
+                                size={24}
+                            />
                             <img
                                 src={performer.media || "https://via.placeholder.com/150"}
                                 alt={`${performer.firstName} ${performer.lastName}`}
@@ -68,10 +85,9 @@ export default function Exceptional() {
 
                 {/* Right Arrow */}
                 <button onClick={goToNext} className="text-gray-600 hover:text-black">
-                    <FaArrowRight size={24}/>
+                    <FaArrowRight size={24} />
                 </button>
             </div>
-
         </div>
     );
 }

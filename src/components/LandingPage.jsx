@@ -52,23 +52,15 @@ export default function LandingPage() {
                             <FaLocationPin className="text-[#ffa502] absolute left-2"/>
                             <input
                                 type="text"
-                                placeholder="Choose Location"
+                                placeholder="Source"
                                 className="bg-light1 rounded-md pl-8 py-2 w-full outline-none"
                             />
                         </div>
                         <div className="relative h-10 w-40 flex items-center">
-                            <FaCalendar className="text-[#ffa502] absolute left-2"/>
+                            <FaLocationPin className="text-[#ffa502] absolute left-2"/>
                             <input
-                                type="date"
-                                defaultValue="2022-02-12"
-                                className="bg-light1 rounded-md pl-8 py-2 w-full outline-none"
-                            />
-                        </div>
-                        <div className="relative h-10 w-40 flex items-center">
-                            <FaCalendar className="text-[#ffa502] absolute left-2"/>
-                            <input
-                                type="date"
-                                defaultValue="2022-03-12"
+                                type="text"
+                                placeholder="Destination"
                                 className="bg-light1 rounded-md pl-8 py-2 w-full outline-none"
                             />
                         </div>
@@ -76,7 +68,7 @@ export default function LandingPage() {
                             <FaPerson className="text-[#ffa502] absolute left-2"/>
                             <input
                                 type="text"
-                                placeholder="Search Trainer"
+                                placeholder="Search Driver"
                                 className="bg-light1 rounded-md pl-8 py-2 w-full outline-none"
                             />
                         </div>

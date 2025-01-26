@@ -13,7 +13,7 @@ function App() {
         <NavBar/>
         <LandingPage/>
         <TopRatedServices/>
-        <ExploreComponent/>
+        {/*<ExploreComponent/>*/}
         <Exceptional/>
         <FooterSection/>
     </>)
