@@ -1,1 +1,1 @@
-export const CUSTOMER_PROGRESS = "v1/customer/public/fetch-all";
+export const CUSTOMER_PROGRESS = "v1/driver/fetch-all";
