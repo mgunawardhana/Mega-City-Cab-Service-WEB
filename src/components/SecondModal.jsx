@@ -3,7 +3,9 @@ import { useState, useEffect } from "react";
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 
-const SecondModal = ({ closeSecondModal }) => {
+const SecondModal = ({setIsSecondModalOpen }) => {
+
+
     const driverOptions = ["Driver 1", "Driver 2", "Driver 3", "Driver 4"];
     const [driverId, setDriverId] = useState(driverOptions[0]);
     const [destinationDetails, setDestinationDetails] = useState("");
@@ -33,6 +35,11 @@ const SecondModal = ({ closeSecondModal }) => {
         return position === null ? null : <Marker position={position} />;
     };
 
+    const openSecondModal = () => {
+
+    };
+
+
     const handleSubmit = (e) => {
         e.preventDefault();
         alert("Form submitted successfully!");
@@ -43,7 +50,7 @@ const SecondModal = ({ closeSecondModal }) => {
             <div className="bg-white w-[600px] rounded-lg shadow-lg p-8 relative">
                 <button
                     className="absolute top-3 right-3 text-gray-500 hover:text-gray-800"
-                    onClick={closeSecondModal}
+                    onClick={() => setIsSecondModalOpen()}
                 >
                     <MdClose size={24} />
                 </button>

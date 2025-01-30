@@ -9,14 +9,10 @@ export default function NavBar() {
     const [isNavigationOpen, setIsNavigationOpen] = useState(false);
     const [isSignInModalOpen, setIsSignInModalOpen] = useState(false);
     const [isSecondModalOpen, setIsSecondModalOpen] = useState(false);
-
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const showDropdown = () => setDropdown(!dropdown);
 
-    const toggleNavigation = () => {
-        setIsNavigationOpen(!isNavigationOpen);
-        setIsSignInModalOpen(false);
-        setIsSecondModalOpen(false);
-    };
+
 
     const openSignInModal = () => {
         setIsNavigationOpen(false);
@@ -141,7 +137,7 @@ export default function NavBar() {
             )}
 
             {isSecondModalOpen && (
-                <SecondModal/>
+                <SecondModal setIsSecondModalOpen={setIsSecondModalOpen}/>
             )}
         </nav>
     );
