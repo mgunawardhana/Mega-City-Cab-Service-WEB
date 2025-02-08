@@ -96,7 +96,7 @@ export default function ExploreComponent() {
                         />
                         <span className="text-green-500 font-semibold text-sm">VERIFIED</span>
                         <span className="absolute bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs rounded-lg px-2 py-1">
-                            Verified by Power House Fitness Specialists
+                            Verified by Mega City Cab Specialists.
                         </span>
                     </div>
                 </div>

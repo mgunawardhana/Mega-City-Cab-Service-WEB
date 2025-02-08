@@ -3,17 +3,20 @@ import { useState, useEffect } from "react";
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 
-const SecondModal = ({setIsSecondModalOpen }) => {
-
-
+const SecondModal = ({ setIsSecondModalOpen }) => {
     const driverOptions = ["Driver 1", "Driver 2", "Driver 3", "Driver 4"];
     const [driverId, setDriverId] = useState(driverOptions[0]);
-    const [destinationDetails, setDestinationDetails] = useState("");
     const [pickupLocation, setPickupLocation] = useState("");
     const [dropOffLocation, setDropOffLocation] = useState("");
-    const [taxes, setTaxes] = useState("+3.071");
-    const [position, setPosition] = useState([51.505, -0.09]);
+    const [position, setPosition] = useState([6.9271, 79.8612]); // Default to Colombo, Sri Lanka
+    const [distance, setDistance] = useState(0);
+    const [cost, setCost] = useState(0);
+    const [tax, setTax] = useState(0);
+    const [totalAmount, setTotalAmount] = useState(0);
     const today = new Date().toISOString().split("T")[0];
+
+    const costPerKm = 80; // Rs. 80 per km
+    const taxRate = 0.10; // 10% tax
 
     useEffect(() => {
         if (navigator.geolocation) {
@@ -25,24 +28,51 @@ const SecondModal = ({setIsSecondModalOpen }) => {
         }
     }, []);
 
+    const calculateDistance = (lat1, lon1, lat2, lon2) => {
+        const R = 6371; // Earth radius in km
+        const dLat = (lat2 - lat1) * (Math.PI / 180);
+        const dLon = (lon2 - lon1) * (Math.PI / 180);
+        const a =
+            Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(lat1 * (Math.PI / 180)) *
+            Math.cos(lat2 * (Math.PI / 180)) *
+            Math.sin(dLon / 2) *
+            Math.sin(dLon / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return (R * c).toFixed(2); // Distance in km
+    };
+
+    const updateCostAndTax = (km) => {
+        const totalCost = km * costPerKm;
+        const taxAmount = totalCost * taxRate;
+        const finalAmount = totalCost + taxAmount;
+
+        setCost(totalCost.toFixed(2));
+        setTax(taxAmount.toFixed(2));
+        setTotalAmount(finalAmount.toFixed(2));
+    };
+
     const LocationMarker = () => {
         useMapEvents({
             click(e) {
                 setDropOffLocation(`${e.latlng.lat}, ${e.latlng.lng}`);
-                setDestinationDetails(`${e.latlng.lat}, ${e.latlng.lng}`);
+
+                if (pickupLocation) {
+                    const [pickupLat, pickupLng] = pickupLocation.split(", ").map(Number);
+                    const dropLat = e.latlng.lat;
+                    const dropLng = e.latlng.lng;
+                    const calculatedDistance = calculateDistance(pickupLat, pickupLng, dropLat, dropLng);
+                    setDistance(calculatedDistance);
+                    updateCostAndTax(calculatedDistance);
+                }
             }
         });
         return position === null ? null : <Marker position={position} />;
     };
 
-    const openSecondModal = () => {
-
-    };
-
-
     const handleSubmit = (e) => {
         e.preventDefault();
-        alert("Form submitted successfully!");
+        alert(`Booking Confirmed! Distance: ${distance} km, Amount: Rs. ${totalAmount}`);
     };
 
     return (
@@ -54,13 +84,11 @@ const SecondModal = ({setIsSecondModalOpen }) => {
                 >
                     <MdClose size={24} />
                 </button>
-                <h2 className="text-center text-2xl font-bolder mb-4 text-[#222]">Drop Booking</h2>
-                <p className="text-center text-sm">Fill an wait Our Vehicle will caught you</p>
+                <h2 className="text-center text-2xl font-bold mb-4 text-[#222]">Drop Booking</h2>
+                <p className="text-center text-sm">Fill the form and our vehicle will arrive</p>
 
                 <MapContainer center={position} zoom={13} style={{ height: "300px", width: "100%" }}>
-                    <TileLayer
-                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                    />
+                    <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
                     <LocationMarker />
                 </MapContainer>
 
@@ -85,27 +113,66 @@ const SecondModal = ({setIsSecondModalOpen }) => {
                             />
                         </div>
                     ))}
+
                     <div className="flex flex-col items-start">
-                        <label className="text-left text-sm font-medium text-gray-700">Taxes</label>
-                        <input
-                            type="text"
-                            className="w-full p-2 border rounded text-red-500 font-bold"
-                            value={taxes}
-                            readOnly
-                        />
-                    </div>
-                    <div className="flex flex-col items-start">
-                        <label className="text-left text-sm font-medium text-gray-700">Booking Date</label>
-                        <input type="date" className="w-full p-2 border rounded" value={today} readOnly required />
-                    </div>
-                    <div className="flex flex-col items-start">
-                        <label className="text-left text-sm font-medium text-gray-700">Driver ID</label>
-                        <select className="w-full p-2 border rounded" value={driverId} onChange={(e) => setDriverId(e.target.value)} required>
+                        <label className="text-left text-sm font-medium text-gray-700 mb-1">Driver <span
+                            className="px-1.5 py-0.5 bg-blue-100 text-blue-600 text-xs font-semibold rounded-full">Assigned by AI</span></label>
+                        <select
+                            className="w-full p-2 border rounded"
+                            value={driverId}
+                            onChange={(e) => setDriverId(e.target.value)}
+                            required
+                        >
                             {driverOptions.map((driver, index) => (
                                 <option key={index} value={driver}>{driver}</option>
                             ))}
                         </select>
                     </div>
+
+                    <div className="flex flex-col items-start">
+                        <label className="text-left text-sm font-medium text-gray-700">Distance </label>
+                        <input
+                            type="text"
+                            className="w-full p-2 border rounded text-blue-500 font-bold"
+                            value={distance ? `${distance} km` : "Select drop-off location"}
+                            readOnly
+                        />
+                    </div>
+
+                    <div className="flex flex-col items-start">
+                        <label className="text-left text-sm font-medium text-gray-700">Cost (Rs.)</label>
+                        <input
+                            type="text"
+                            className="w-full p-2 border rounded text-green-500 font-bold"
+                            value={distance ? `Rs. ${cost}` : "N/A"}
+                            readOnly
+                        />
+                    </div>
+
+                    <div className="flex flex-col items-start">
+                        <label className="text-left text-sm font-medium text-gray-700 mb-1">Tax (10%) <span
+                            className="px-1.5 py-0.5 bg-red-100 text-red-600 text-xs font-semibold rounded-full">Tax rate updated</span>
+
+
+                        </label>
+                        <input
+                            type="text"
+                            className="w-full p-2 border rounded text-red-500 font-bold"
+                            value={tax ? `Rs. ${tax}` : "N/A"}
+                            readOnly
+                        />
+                    </div>
+
+                    <div className="flex flex-col items-start">
+                        <label className="text-left text-sm font-medium text-gray-700">Your Total Amount</label>
+                        <input
+                            type="text"
+                            className="w-full p-2 border rounded text-purple-500 font-bold"
+                            value={totalAmount ? `Rs. ${totalAmount}` : "N/A"}
+                            readOnly
+                        />
+                    </div>
+
                     <button type="submit" className="col-span-2 w-full bg-yellow-500 text-white py-2 rounded hover:bg-yellow-600">
                         Place Booking
                     </button>

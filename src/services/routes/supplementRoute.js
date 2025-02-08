@@ -1,1 +1,1 @@
-export const GET_SUPPLEMENT_ENDPOINT = "v1/vehicle/fetch-all";
+export const GET_SUPPLEMENT_ENDPOINT = "v1/vehicle/fetch-all?page=0&size=50";
