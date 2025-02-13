@@ -1,0 +1,130 @@
+import React, { useRef } from "react";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
+
+export default function Bill({ onClose }) {
+    const billRef = useRef(null);
+
+    const handleDownloadPDF = () => {
+        const input = billRef.current;
+        html2canvas(input, { scale: 2 }).then((canvas) => {
+            const imgData = canvas.toDataURL("image/png");
+            const pdf = new jsPDF("p", "mm", "a4");
+            const imgWidth = 210; // A4 width in mm
+            const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+            pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
+            pdf.save("invoice.pdf");
+        });
+    };
+
+    return (
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
+            <div ref={billRef} className="relative max-w-4xl mx-auto p-8 bg-white border border-gray-300 shadow-lg">
+                {/* Close Button */}
+                <button className="absolute top-4 right-4 text-gray-600 hover:text-gray-900" onClick={onClose}>
+                    ✖
+                </button>
+
+                {/* Header */}
+                <div className="flex justify-between items-center border-b-2 border-gray-800 pb-4">
+                    <div>
+                        <h1 className="text-3xl font-bold text-gray-800">MEGA CITY CAB SERVICE</h1>
+                        <p>123 456 789 000</p>
+                        <p>Thor Street, 4891. Town</p>
+                        <p>info@megacity.com</p>
+                    </div>
+                    <h2 className="text-4xl font-bold text-orange-500">Invoice</h2>
+                </div>
+
+                {/* Invoice Details */}
+                <div className="mt-6 grid grid-cols-2 gap-4">
+                    <div>
+                        <p><strong>Name:</strong> Jhon Doe</p>
+                        <p><strong>Address:</strong> Odin Street, Town, Country</p>
+                        <p><strong>Phone:</strong> 0123 456 789 020</p>
+                        <p><strong>Invoice #:</strong> {`INV${new Date().toISOString().replace(/[-:.TZ]/g, "")}`}</p>
+                    </div>
+                    <div>
+                        <p><strong>A/C Name:</strong> 00513</p>
+                        <p><strong>Account:</strong> 8158 8756 89897</p>
+                        <p><strong>Bank Detail:</strong> Add details here</p>
+                        <p><strong>Date:</strong> 04/09/2025</p>
+                    </div>
+                </div>
+
+                {/* Table */}
+                <table className="w-full mt-6 border border-gray-800">
+                    <thead>
+                    <tr className="bg-gray-800 text-white">
+                        <th className="border border-gray-800 px-4 py-2">DESCRIPTION</th>
+                        <th className="border border-gray-800 px-4 py-2">TAX</th>
+                        <th className="border border-gray-800 px-4 py-2">PRICE</th>
+                        <th className="border border-gray-800 px-4 py-2">TOTAL</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr className="border-b border-gray-300">
+                        <td className="border px-4 py-2">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</td>
+                        <td className="border px-4 py-2">1</td>
+                        <td className="border px-4 py-2">$0.00</td>
+                        <td className="border px-4 py-2">$0.00</td>
+                    </tr>
+                    <tr className="border-b border-gray-300">
+                        <td className="border px-4 py-2">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</td>
+                        <td className="border px-4 py-2">1</td>
+                        <td className="border px-4 py-2">$0.00</td>
+                        <td className="border px-4 py-2">$0.00</td>
+                    </tr>
+                    <tr className="border-b border-gray-300">
+                        <td className="border px-4 py-2">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</td>
+                        <td className="border px-4 py-2">1</td>
+                        <td className="border px-4 py-2">$0.00</td>
+                        <td className="border px-4 py-2">$0.00</td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                {/* Summary */}
+                <div className="flex justify-end mt-6">
+                    <div className="w-1/3 space-y-2">
+                        <div className="flex justify-between border-b pb-2">
+                            <span>SUB TOTAL</span>
+                            <span>$0.00</span>
+                        </div>
+                        <div className="flex justify-between border-b pb-2">
+                            <span>TAX</span>
+                            <span>$0.00</span>
+                        </div>
+                        <div className="flex justify-between font-bold text-orange-500">
+                            <span>GRAND TOTAL</span>
+                            <span>$8,600.00</span>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Terms */}
+                <div className="mt-6 border-t pt-4">
+                    <p className="text-sm">
+                        TERMS: Payments must be made in full upon trip completion via cash, card, or digital payment methods. Any disputes regarding fare must be raised immediately.
+                    </p>
+                </div>
+
+                {/* Footer */}
+                <div className="text-center mt-8 text-gray-700">
+                    <h2 className="text-xl font-bold">Thank you for choosing Mega City Cab Service</h2>
+                    <p>Contact us at: 123-456-7890</p>
+                    <div className="flex justify-center space-x-4 mt-2">
+                        <span>© 2025 Mega City Cab Service</span>
+                        <span>@MegaCityCab</span>
+                    </div>
+                </div>
+            </div>
+
+            {/* Download PDF Button */}
+            <button className="mt-4 px-6 py-2 bg-blue-600 text-white rounded" onClick={handleDownloadPDF}>
+                Download PDF
+            </button>
+        </div>
+    );
+}

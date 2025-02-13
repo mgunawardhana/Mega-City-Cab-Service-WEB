@@ -3,6 +3,7 @@ import { MdClose } from "react-icons/md";
 import { HiMenuAlt3 } from "react-icons/hi";
 import { FaFacebookF, FaTwitter, FaGithub } from "react-icons/fa";
 import SecondModal from "./SecondModal.jsx";
+import Bill from "./Bill.jsx";
 
 export default function NavBar() {
     const [dropdown, setDropdown] = useState(false);
@@ -138,6 +139,7 @@ export default function NavBar() {
 
             {isSecondModalOpen && (
                 <SecondModal setIsSecondModalOpen={setIsSecondModalOpen}/>
+            // <Bill />
             )}
         </nav>
     );

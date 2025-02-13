@@ -145,7 +145,7 @@ export default function ExploreComponent() {
                             <img
                                 src={supplement.media}
                                 alt={supplement.name}
-                                className="rounded-t-2xl h-[200px] object-cover"
+                                className="rounded-t-2xl w-full h-40 object-cover"
                             />
                             <p
                                 className={`bg-white font-semibold rounded-lg p-1 text-sm absolute top-4 right-4 ${
