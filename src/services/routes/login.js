@@ -1,0 +1,1 @@
+export const LOGIN = "v1/auth/authenticate";

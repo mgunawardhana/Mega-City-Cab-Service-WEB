@@ -4,7 +4,7 @@ import { MapContainer, TileLayer, Marker, Polyline, useMapEvents } from "react-l
 import "leaflet/dist/leaflet.css";
 import Bill from "./Bill.jsx";
 
-const SecondModal = ({ setIsSecondModalOpen }) => {
+const SecondModal = ({ setIsSecondModalOpen,userName }) => {
     const driverOptions = ["Mr. Nilan", "Mr. Nelson", "Mr. Renuka", "Mr. Ravi", "Mr. Roshan"];
     const [driverId, setDriverId] = useState(driverOptions[0]);
     const [pickupLocation, setPickupLocation] = useState("");
@@ -157,6 +157,7 @@ const SecondModal = ({ setIsSecondModalOpen }) => {
     if (showBillModal) {
         return (
             <Bill
+                userName={userName}
                 bookingData={bookingData}
                 onClose={() => {
                     setShowBillModal(false);

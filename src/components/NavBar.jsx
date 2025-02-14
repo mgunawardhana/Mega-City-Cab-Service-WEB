@@ -4,6 +4,8 @@ import { HiMenuAlt3 } from "react-icons/hi";
 import { FaFacebookF, FaTwitter, FaGithub } from "react-icons/fa";
 import SecondModal from "./SecondModal.jsx";
 import Bill from "./Bill.jsx";
+import api from "../services/services.js";
+import {LOGIN} from "../services/routes/login.js";
 
 export default function NavBar() {
     const [dropdown, setDropdown] = useState(false);
@@ -11,9 +13,32 @@ export default function NavBar() {
     const [isSignInModalOpen, setIsSignInModalOpen] = useState(false);
     const [isSecondModalOpen, setIsSecondModalOpen] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [email, setEmail] = useState("");
+    const [userName, setUserName] = useState("");
+    const [password, setPassword] = useState("");
     const showDropdown = () => setDropdown(!dropdown);
 
+    const Login = async () => {
+        try {
+            const response = await api.post(LOGIN, {
+                email: email,
+                password: password
+            });
+            console.log("Response:", response);
+            setUserName(response.data.user_name);
+            return response.data;
+        } catch (error) {
+            console.error("Error fetching data:", error);
+            throw error;
+        }
+    };
 
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        Login().then(r => {
+            openSecondModal();
+        });
+    };
 
     const openSignInModal = () => {
         setIsNavigationOpen(false);
@@ -21,7 +46,11 @@ export default function NavBar() {
         setIsSecondModalOpen(false);
     };
 
-    const closeSignInModal = () => setIsSignInModalOpen(false);
+    const closeSignInModal = () => {
+        setIsSignInModalOpen(false);
+        setEmail("");
+        setPassword("");
+    };
 
     const openSecondModal = () => {
         setIsSignInModalOpen(false);
@@ -90,15 +119,18 @@ export default function NavBar() {
                                 Sign up
                             </a>
                         </p>
-                        <form>
+                        <form onSubmit={handleSubmit}>
                             <div className="mb-4">
                                 <label className="block text-sm font-medium mb-1 text-[#555]">
                                     Email *
                                 </label>
                                 <input
                                     type="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
                                     className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#ffa502]"
-                                    placeholder="admin@fusetheme.com"
+                                    placeholder="Enter your email"
+                                    required
                                 />
                             </div>
                             <div className="mb-4">
@@ -107,12 +139,15 @@ export default function NavBar() {
                                 </label>
                                 <input
                                     type="password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
                                     className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#ffa502]"
                                     placeholder="Enter your password"
+                                    required
                                 />
                             </div>
                             <button
-                                onClick={openSecondModal}
+                                type="submit"
                                 className="w-full bg-[#ffa502] text-white py-3 rounded font-bold hover:bg-[#e69500] transition"
                             >
                                 Sign In
@@ -138,7 +173,7 @@ export default function NavBar() {
             )}
 
             {isSecondModalOpen && (
-                <SecondModal setIsSecondModalOpen={setIsSecondModalOpen}/>
+                <SecondModal setIsSecondModalOpen={setIsSecondModalOpen} userName={userName}/>
             )}
         </nav>
     );
