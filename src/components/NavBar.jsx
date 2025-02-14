@@ -139,7 +139,6 @@ export default function NavBar() {
 
             {isSecondModalOpen && (
                 <SecondModal setIsSecondModalOpen={setIsSecondModalOpen}/>
-            // <Bill />
             )}
         </nav>
     );
