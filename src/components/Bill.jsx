@@ -35,25 +35,22 @@ export default function Bill({ onClose,bookingData }) {
                 <div className="flex justify-between items-center border-b-2 border-gray-800 pb-4">
                     <div>
                         <h1 className="text-3xl font-bold text-gray-800">MEGA CITY CAB SERVICE</h1>
-                        <p>123 456 789 000</p>
-                        <p>Thor Street, 4891. Town</p>
-                        <p>info@megacity.com</p>
+
                     </div>
-                    <h2 className="text-4xl font-bold text-orange-500">Invoice</h2>
+                    <h2 className="text-4xl font-bold text-orange-500">INVOICE</h2>
                 </div>
 
                 <div className="mt-6 grid grid-cols-2 gap-4">
                     <div>
-                        <p><strong>Name:</strong> Jhon Doe</p>
-                        <p><strong>Address:</strong> Odin Street, Town, Country</p>
-                        <p><strong>Phone:</strong> 0123 456 789 020</p>
-                        <p><strong>Invoice #:</strong> {`INV${new Date().toISOString().replace(/[-:.TZ]/g, "")}`}</p>
+                        <p><strong>Contact: </strong> (+94) ( 011) 2683171</p>
+                        <p><strong>Address: </strong>137 1/1 Cotta Road, Colombo 08</p>
+                        <p><strong>Mail: </strong>info@megacitycabservicepro.com</p>
                     </div>
                     <div>
-                        <p><strong>A/C Name:</strong> 00513</p>
-                        <p><strong>Account:</strong> 8158 8756 89897</p>
-                        <p><strong>Bank Detail:</strong> Add details here</p>
-                        <p><strong>Date:</strong> 04/09/2025</p>
+
+                        <p><strong>Name:</strong></p>
+                        <p><strong>Invoice #:</strong> {`INV${new Date().toISOString().replace(/[-:.TZ]/g, "")}`}</p>
+                        <p><strong>Date:</strong> {new Date().toLocaleDateString()} {new Date().toLocaleTimeString()}</p>
                     </div>
                 </div>
 
@@ -100,8 +97,8 @@ export default function Bill({ onClose,bookingData }) {
                 </div>
 
                 <div className="text-center mt-8 text-gray-700">
-                    <h2 className="text-xl font-bold">Thank you for choosing Mega City Cab Service</h2>
-                    <p>Contact us at: 123-456-7890</p>
+                    <h2 className="text-xl font-bold">Thank you for choosing Mega City cab Service! We appreciate your trust and look forward to serving you again. Safe travels.!</h2>
+                    {/*<p>Contact us at: 123-456-7890</p>*/}
                     <div className="flex justify-center space-x-4 mt-2">
                         <span>© 2025 Mega City Cab Service</span>
                         <span>@MegaCityCab</span>
