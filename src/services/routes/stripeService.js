@@ -1,0 +1,1 @@
+export const STRIPE_SERVICE = '/v1/booking/checkout';

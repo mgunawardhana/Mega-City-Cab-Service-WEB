@@ -13,10 +13,10 @@ export default function Bill({ onClose, bookingData, userName }) {
         emailjs.init("ejR0xzMGaWtvCmdBw");
         if (!hasGeneratedPDF.current) {
             hasGeneratedPDF.current = true;
-            handleDownloadPDF().then(r => (r));
         }
     }, []);
 
+    // localStorage.setItem(handleDownloadPDF().then(r => (r));)
 
     const handleDownloadPDF = async () => {
         if (sendingEmail) return;

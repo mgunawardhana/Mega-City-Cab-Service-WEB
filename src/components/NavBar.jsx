@@ -1,9 +1,9 @@
-import { useState } from "react";
-import { MdClose } from "react-icons/md";
-import { HiMenuAlt3 } from "react-icons/hi";
-import { FaFacebookF, FaTwitter, FaGithub } from "react-icons/fa";
+import {useState} from "react";
+import {MdClose} from "react-icons/md";
+import {HiMenuAlt3} from "react-icons/hi";
+import {FaFacebookF, FaGithub, FaTwitter} from "react-icons/fa";
 import SecondModal from "./SecondModal.jsx";
-import Bill from "./Bill.jsx";
+
 import api from "../services/services.js";
 import {LOGIN} from "../services/routes/login.js";
 
@@ -21,10 +21,12 @@ export default function NavBar() {
     const Login = async () => {
         try {
             const response = await api.post(LOGIN, {
-                email: email,
-                password: password
+                email: email, password: password
             });
-            console.log("Response:", response);
+            console.log("Response:", response.data.access_token);
+            localStorage.setItem("access_token", response.data.access_token);
+            localStorage.setItem("refresh_token", response.data.refresh_token);
+            localStorage.setItem("user_name", response.data.user_name);
             setUserName(response.data.user_name);
             return response.data;
         } catch (error) {
@@ -59,8 +61,7 @@ export default function NavBar() {
 
     const closeSecondModal = () => setIsSecondModalOpen(false);
 
-    return (
-        <nav className="w-full h-24 flex flex-col justify-center items-center sticky top-0 z-50 bg-white">
+    return (<nav className="w-full h-24 flex flex-col justify-center items-center sticky top-0 z-50 bg-white">
             <div className="container mx-auto lg:px-3 w-full">
                 <div className="lg:w-full w-11/12 mx-auto h-full flex justify-between items-center">
                     <div className="flex items-center gap-x-2">
@@ -70,15 +71,13 @@ export default function NavBar() {
                     </div>
 
                     <ul className="flex items-center xl:gap-12 gap-x-4 max-lg:hidden">
-                        {["Home", "Ticket", "Explore", "Activity"].map((item, index) => (
-                            <a
+                        {["Home", "Ticket", "Explore", "Activity"].map((item, index) => (<a
                                 key={index}
                                 href="#"
                                 className="leading-normal no-underline text-black text-lg hover:text-[#ffa502]"
                             >
                                 {item}
-                            </a>
-                        ))}
+                            </a>))}
                     </ul>
 
                     <div className="flex gap-4 max-lg:hidden">
@@ -95,11 +94,10 @@ export default function NavBar() {
                         </button>
                     </div>
 
-                    {dropdown ? (
-                        <MdClose onClick={showDropdown} className="lg:hidden text-[22px] cursor-pointer text-black" />
-                    ) : (
-                        <HiMenuAlt3 onClick={showDropdown} className="lg:hidden text-[22px] cursor-pointer text-black" />
-                    )}
+                    {dropdown ? (<MdClose onClick={showDropdown}
+                                          className="lg:hidden text-[22px] cursor-pointer text-black"/>) : (
+                        <HiMenuAlt3 onClick={showDropdown}
+                                    className="lg:hidden text-[22px] cursor-pointer text-black"/>)}
                 </div>
             </div>
 
@@ -169,12 +167,8 @@ export default function NavBar() {
                             </button>
                         </div>
                     </div>
-                </div>
-            )}
+                </div>)}
 
-            {isSecondModalOpen && (
-                <SecondModal setIsSecondModalOpen={setIsSecondModalOpen} userName={userName}/>
-            )}
-        </nav>
-    );
+            {isSecondModalOpen && (<SecondModal setIsSecondModalOpen={setIsSecondModalOpen} userName={userName}/>)}
+        </nav>);
 }
