@@ -95,7 +95,7 @@ import { MdClose } from "react-icons/md";
                 }, []);
 
                 const fetchRouteData = async (pickup, drop) => {
-                    const apiKey = "5b3ce3597851110001cf62482ee937ad82ee439cb190a331e61a3bfe"; // Replace with your API key
+                    const apiKey = "5b3ce3597851110001cf6248681c73ec5f3a8fc6c14bfacbc00708517be0a9d1dd8bf31c57b7624d"; // Replace with your API key
                     const [pickupLat, pickupLng] = pickup.split(", ").map(Number);
                     const [dropLat, dropLng] = drop.split(", ").map(Number);
 

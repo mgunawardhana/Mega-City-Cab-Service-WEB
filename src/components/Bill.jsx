@@ -7,13 +7,11 @@ export default function Bill({ onClose, bookingData, userName }) {
     const billRef = useRef(null);
     const [sendingEmail, setSendingEmail] = useState(false);
     const [emailStatus, setEmailStatus] = useState(null);
-    const hasGeneratedPDF = useRef(false); // Add this flag
 
     useEffect(() => {
+        handleDownloadPDF()
         emailjs.init("ejR0xzMGaWtvCmdBw");
-        if (!hasGeneratedPDF.current) {
-            hasGeneratedPDF.current = true;
-        }
+
     }, []);
 
     // localStorage.setItem(handleDownloadPDF().then(r => (r));)
@@ -167,11 +165,6 @@ export default function Bill({ onClose, bookingData, userName }) {
                             <span>@MegaCityCab</span>
                         </div>
                     </div>
-
-                    {/* Download PDF Button */}
-                    {/*<div className="mt-4 text-center">*/}
-                    {/*    <button onClick={handleDownloadPDF} className="bg-orange-500 text-white px-4 py-2 rounded">Download & Send Invoice</button>*/}
-                    {/*</div>*/}
                 </div>
             </div>
         </div>

@@ -85,7 +85,7 @@ export default function ExploreComponent() {
                     {"★".repeat(product.rating || 5).padEnd(5, "☆")}
                 </div>
 
-                <p className="text-center text-2xl font-bold mb-4">${product.price || "N/A"}</p>
+                <p className="text-center text-2xl font-bold mb-4">{product.price || "N/A"}</p>
 
                 <div className="flex justify-center items-center gap-1 mb-4 text-center">
                     <div className="flex items-center gap-1 bg-gray-100 px-3 py-1 rounded-lg shadow relative group">

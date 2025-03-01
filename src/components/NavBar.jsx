@@ -13,9 +13,9 @@ export default function NavBar() {
     const [isSignInModalOpen, setIsSignInModalOpen] = useState(false);
     const [isSecondModalOpen, setIsSecondModalOpen] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [email, setEmail] = useState("");
+    const [email, setEmail] = useState("maneesha@gmail.com");
     const [userName, setUserName] = useState("");
-    const [password, setPassword] = useState("");
+    const [password, setPassword] = useState("maneesha@123");
     const showDropdown = () => setDropdown(!dropdown);
 
     const Login = async () => {

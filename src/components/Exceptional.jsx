@@ -14,8 +14,8 @@ export default function Exceptional() {
             console.log("Fetched Driver Details:", response.data.result);
             setBestPerformers(
                 response.data.result.map((driver) => ({
-                    firstName: driver.driverFirstName,
-                    lastName: driver.driverLastName,
+                    firstName: driver.driverNIC,
+                    lastName: driver.driverNIC,
                     status: driver.driverStatus,
                     media: driver.driverProfilePicture,
                 }))
