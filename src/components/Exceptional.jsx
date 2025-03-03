@@ -17,7 +17,7 @@ export default function Exceptional() {
                     firstName: driver.driverNIC,
                     lastName: driver.driverNIC,
                     status: driver.driverStatus,
-                    media: driver.driverProfilePicture,
+                    media: driver.user_profile_pic, // Use user_profile_pic field here
                 }))
             );
         } catch (error) {
@@ -69,7 +69,7 @@ export default function Exceptional() {
                                 size={24}
                             />
                             <img
-                                src={performer.media || "https://via.placeholder.com/150"}
+                                src={performer.media}
                                 alt={`${performer.firstName} ${performer.lastName}`}
                                 className="w-full h-52 object-cover rounded-t-lg"
                             />
