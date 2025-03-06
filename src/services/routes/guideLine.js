@@ -1,0 +1,1 @@
+export const GUIDE_LINE='v1/guideline/fetch-all?page=0&size=8'

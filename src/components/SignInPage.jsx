@@ -2,21 +2,23 @@ import { useState } from "react";
 import { FaFacebookF, FaGithub, FaTwitter } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import api from "../services/services.js";
-import {LOGIN} from "../services/routes/login.js";
-
+import { LOGIN } from "../services/routes/login.js";
 
 export default function SignInPage() {
     const [email, setEmail] = useState("maneesha@gmail.com");
     const [password, setPassword] = useState("maneesha@123");
     const navigate = useNavigate();
 
+    localStorage.setItem('email_key',email);
+
     const Login = async () => {
         try {
             const response = await api.post(LOGIN, { email, password });
-            console.log("Response:", response.data.access_token);
+            console.log("Response:", response.data);
             localStorage.setItem("access_token", response.data.access_token);
             localStorage.setItem("refresh_token", response.data.refresh_token);
             localStorage.setItem("user_name", response.data.user_name);
+            localStorage.setItem("role", response.data.role); // Store the role
             return response.data;
         } catch (error) {
             console.error("Error fetching data:", error);
@@ -26,8 +28,18 @@ export default function SignInPage() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        Login().then(() => {
-            navigate("/booking"); // Redirect to booking page on success
+        Login().then((data) => {
+            // Navigate based on role
+            if (data.role === "DRIVER") {
+                navigate("/driver-dashboard"); // New route for drivers
+            } else if (data.role === "ADMIN") {
+                navigate("/booking"); // Existing route for admin
+            } else {
+                navigate("/booking"); // Default route for other roles
+            }
+        }).catch((error) => {
+            // Handle login error (e.g., show error message)
+            console.error("Login failed:", error);
         });
     };
 

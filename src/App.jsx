@@ -9,12 +9,11 @@ import SignInPage from "./components/SignInPage.jsx";
 import BookingPage from "./components/BookingPage.jsx";
 import BillPage from "./components/BillPage.jsx";
 import SignUpPage from "./components/SignUpPage.jsx";
+import DriverDashboard from "./components/DriverDashboard.jsx"; // New component for drivers
 
-// A wrapper component to conditionally render NavBar and FooterSection
 function AppContent() {
     const location = useLocation();
-    // Hide NavBar and FooterSection on /signin, /signup, /booking, and /bill
-    const hideNavBarAndFooter = ["/signin", "/signup", "/booking", "/bill"].includes(location.pathname);
+    const hideNavBarAndFooter = ["/signin", "/signup", "/booking", "/bill", "/driver-dashboard"].includes(location.pathname);
 
     return (
         <>
@@ -32,9 +31,10 @@ function AppContent() {
                     }
                 />
                 <Route path="/signin" element={<SignInPage />} />
-                <Route path="/signup" element={<SignUpPage />} /> {/* Add the signup route */}
+                <Route path="/signup" element={<SignUpPage />} />
                 <Route path="/booking" element={<BookingPage />} />
                 <Route path="/bill" element={<BillPage />} />
+                <Route path="/driver-dashboard" element={<DriverDashboard />} /> {/* New driver route */}
             </Routes>
             {!hideNavBarAndFooter && <FooterSection />}
         </>

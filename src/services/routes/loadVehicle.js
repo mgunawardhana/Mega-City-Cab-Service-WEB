@@ -1,0 +1,1 @@
+export const FETCH_VEHICLES = "v1/vehicle/fetch-all?page=0&size=20";
