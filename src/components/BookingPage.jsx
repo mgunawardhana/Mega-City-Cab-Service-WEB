@@ -8,7 +8,7 @@ import {FETCH_ALL_DRIVERS} from "../services/routes/loadAllDrivers.js";
 import {GET_SUPPLEMENT_ENDPOINT} from "../services/routes/supplementRoute.js";
 import {FETCH_VEHICLES} from "../services/routes/loadVehicle.js";
 import {GUIDE_LINE} from "../services/routes/guideLine.js";
-import {STRIPE_SERVICE} from "../services/routes/stripeService.js";
+import {PLACE_BOOKING, STRIPE_SERVICE} from "../services/routes/stripeService.js";
 
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -337,11 +337,11 @@ export default function BookingPage() {
         setError(null);
         let username = localStorage.getItem("user_name");
 
-        localStorage.setItem("pickupLocation",pickupLocation);
-        localStorage.setItem("dropOffLocation",dropOffLocation);
+        localStorage.setItem("pickupLocation", pickupLocation);
+        localStorage.setItem("dropOffLocation", dropOffLocation);
 
         const bookingDetails = {
-            bookingDate: new Date().toISOString(),
+            bookingDate: "2025-02-12T10:10:00",
             pickupLocation: pickupLocation,
             dropOffLocation: dropOffLocation,
             carNumber: vehicleId,
@@ -351,7 +351,8 @@ export default function BookingPage() {
             taxWithoutCost: parseFloat(cost),
             totalAmount: parseFloat(totalAmount),
             customerRegistrationNumber: username,
-            driverId: driverId
+            driverId: driverId,
+            status: "PENDING"
         };
 
         console.log("Booking data log:", bookingDetails);
@@ -359,23 +360,33 @@ export default function BookingPage() {
         localStorage.setItem("userName", username);
 
         try {
-            // const response = await api.post(STRIPE_SERVICE, {
-            //     amount: Math.round(parseFloat(totalAmount) * 100),
-            //     quantity: 1,
-            //     name: username,
-            //     currency: "LKR",
-            // });
+            // Step 1: Save the booking
+            const savedResp = await api.post(PLACE_BOOKING, bookingDetails);
 
-            if (response.data.status === "SUCCESS" && response.data.sessionUrl) {
-                localStorage.setItem("if_pdf_need", "true");
-                window.location.href = response.data.sessionUrl;
+            console.log("savedResp", savedResp)
+
+            // Step 2: Check if booking was successful, then trigger payment
+            if (savedResp.status === 200) { // Adjust condition based on your API response
+                const response = await api.post(STRIPE_SERVICE, {
+                    amount: Math.round(parseFloat(totalAmount) * 100),
+                    quantity: 1,
+                    name: username,
+                    currency: "LKR",
+                });
+
+                if (response.data.status === "SUCCESS" && response.data.sessionUrl) {
+                    localStorage.setItem("if_pdf_need", "true");
+                    window.location.href = response.data.sessionUrl;
+                } else {
+                    localStorage.setItem("if_pdf_need", "false");
+                    setError("Payment session creation failed. Please try again.");
+                }
             } else {
-                localStorage.setItem("if_pdf_need", "false");
-                setError("Payment session creation failed. Please try again.");
+                setError("Booking creation failed. Please try again.");
             }
         } catch (error) {
-            console.error("Error creating payment session:", error.message);
-            setError("Error creating payment session. Please try again.");
+            console.error("Error:", error.message);
+            setError("An error occurred. Please try again.");
         } finally {
             setIsLoading(false);
         }
