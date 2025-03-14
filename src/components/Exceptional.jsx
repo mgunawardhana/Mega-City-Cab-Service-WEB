@@ -10,16 +10,20 @@ export default function Exceptional() {
 
     const fetchData = async () => {
         try {
-            const response = await api.get(CUSTOMER_PROGRESS);
+            const response = await api.post(CUSTOMER_PROGRESS);
             console.log("Fetched Driver Details:", response.data.result);
-            setBestPerformers(
-                response.data.result.map((driver) => ({
-                    firstName: driver.driverNIC,
-                    lastName: driver.driverNIC,
-                    status: driver.driverStatus,
-                    media: driver.user_profile_pic, // Use user_profile_pic field here
-                }))
-            );
+
+            // Filter for drivers only and map the data
+            const drivers = response.data.result
+                .filter((driver) => driver.role === "DRIVER")
+                .map((driver) => ({
+                    firstName: driver.firstName || "Driver", // Fallback if firstName is missing
+                    lastName: driver.lastName || driver.driver_nic, // Use lastName or driver_nic
+                    status: driver.driverStatus || "Active", // Fallback status if missing
+                    media: driver.user_profile_pic || "https://via.placeholder.com/150", // Placeholder image if missing
+                }));
+
+            setBestPerformers(drivers);
         } catch (error) {
             console.error("Error fetching data:", error);
         }
@@ -59,28 +63,33 @@ export default function Exceptional() {
 
                 {/* Carousel Container */}
                 <div className="flex space-x-4 overflow-hidden w-full max-w-4xl">
-                    {bestPerformers.slice(currentIndex, currentIndex + 4).map((performer, index) => (
-                        <div
-                            key={index}
-                            className="relative bg-white shadow-lg rounded-lg overflow-hidden flex-shrink-0 w-48 h-64 m-3"
-                        >
-                            <HiOutlinePaperAirplane
-                                className="absolute top-3 left-3 text-[#ffa502]"
-                                size={24}
-                            />
-                            <img
-                                src={performer.media}
-                                alt={`${performer.firstName} ${performer.lastName}`}
-                                className="w-full h-52 object-cover rounded-t-lg"
-                            />
-                            <div className="p-4 text-center">
-                                <p className="text-lg font-semibold">
-                                    {performer.firstName.toUpperCase()} {performer.lastName.toUpperCase()}
-                                </p>
-                                <p className="text-sm text-gray-500">{performer.status}</p>
+                    {bestPerformers.length > 0 ? (
+                        bestPerformers.slice(currentIndex, currentIndex + 4).map((performer, index) => (
+                            <div
+                                key={index}
+                                className="relative bg-white shadow-lg rounded-lg overflow-hidden flex-shrink-0 w-48 h-64 m-3"
+                            >
+                                <HiOutlinePaperAirplane
+                                    className="absolute top-3 left-3 text-[#ffa502]"
+                                    size={24}
+                                />
+                                <img
+                                    src={performer.media}
+                                    alt={`${performer.firstName} ${performer.lastName}`}
+                                    className="w-full h-52 object-cover rounded-t-lg"
+                                    onError={(e) => (e.target.src = "https://via.placeholder.com/150")} // Fallback image on error
+                                />
+                                <div className="p-4 text-center">
+                                    <p className="text-lg font-semibold">
+                                        {performer.firstName.toUpperCase()} {performer.lastName.toUpperCase()}
+                                    </p>
+                                    <p className="text-sm text-gray-500">{performer.status}</p>
+                                </div>
                             </div>
-                        </div>
-                    ))}
+                        ))
+                    ) : (
+                        <p className="text-center text-gray-500">No drivers available</p>
+                    )}
                 </div>
 
                 {/* Right Arrow */}

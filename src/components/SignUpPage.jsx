@@ -196,17 +196,17 @@ export default function SignUpPage() {
                         Sign Up
                     </button>
                 </form>
-                <div className="text-center text-sm my-4 text-gray-500">Or continue with</div>
+                {/*<div className="text-center text-sm my-4 text-gray-500">Or continue with</div>*/}
                 <div className="flex justify-center gap-4">
-                    <button className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200">
-                        <FaFacebookF className="text-blue-600" />
-                    </button>
-                    <button className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200">
-                        <FaTwitter className="text-blue-400" />
-                    </button>
-                    <button className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200">
-                        <FaGithub className="text-gray-800" />
-                    </button>
+                    {/*<button className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200">*/}
+                    {/*    <FaFacebookF className="text-blue-600" />*/}
+                    {/*</button>*/}
+                    {/*<button className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200">*/}
+                    {/*    <FaTwitter className="text-blue-400" />*/}
+                    {/*</button>*/}
+                    {/*<button className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200">*/}
+                    {/*    <FaGithub className="text-gray-800" />*/}
+                    {/*</button>*/}
                 </div>
             </div>
         </div>

@@ -9,28 +9,35 @@ export default function BillPage() {
     const [sendingEmail, setSendingEmail] = useState(false);
     const [emailStatus, setEmailStatus] = useState(null);
     const navigate = useNavigate();
-    const [hasGeneratedPDF, setHasGeneratedPDF] = useState(false); // New state to prevent duplicates
+    const [hasGeneratedPDF, setHasGeneratedPDF] = useState(false);
 
-    // Retrieve booking data and username from localStorage
-    const bookingData = JSON.parse(localStorage.getItem("bookingData")) || {
-        driver: "N/A",
-        pickup: "N/A",
-        dropoff: "N/A",
-        distance: "0",
-        duration: "0",
-        cost: "0.00",
-        tax: "0.00",
-        totalAmount: "0.00",
+    // Properly retrieve and map booking data from localStorage
+    const storedBookingData = JSON.parse(localStorage.getItem("bookingData")) || {};
+
+    // Map the actual data structure to what the component needs
+    const bookingData = {
+        driver: storedBookingData.driverId || "N/A",
+        pickup: storedBookingData.pickupLocation || "N/A",
+        dropoff: storedBookingData.dropOffLocation || "N/A",
+        distance: storedBookingData.distance?.toFixed(2) || "0",
+        duration: storedBookingData.estimatedTime || "0",
+        cost: (storedBookingData.totalAmount - storedBookingData.taxes)?.toFixed(2) || "0.00",
+        tax: storedBookingData.taxes?.toFixed(2) || "0.00",
+        totalAmount: storedBookingData.totalAmount?.toFixed(2) || "0.00",
+        bookingDate: storedBookingData.bookingDate || new Date().toISOString(),
+        customerName: storedBookingData.customerRegistrationNumber || "Guest"
     };
-    const userName = localStorage.getItem("userName") || "Guest";
+
+    // Get username from localStorage or use the one from booking data
+    const userName = localStorage.getItem("userName") || bookingData.customerName;
 
     useEffect(() => {
         const shouldGeneratePDF = localStorage.getItem("if_pdf_need") === "true" && !hasGeneratedPDF;
         if (shouldGeneratePDF) {
             handleDownloadPDF();
-            setHasGeneratedPDF(true); // Mark as generated to prevent re-running
+            setHasGeneratedPDF(true);
         }
-    }, [hasGeneratedPDF]); // Depend on hasGeneratedPDF to avoid re-running unnecessarily
+    }, [hasGeneratedPDF]);
 
     const handleDownloadPDF = async () => {
         if (sendingEmail) return;
@@ -87,8 +94,8 @@ export default function BillPage() {
                 setEmailStatus("success");
                 console.log("Email sent successfully!", response);
                 setTimeout(() => {
-                    navigate("/"); // Redirect to http://localhost:5173/
-                }, 1000); // Brief delay to show success message
+                    navigate("/");
+                }, 1000);
             } else {
                 throw new Error("Email sending failed");
             }
@@ -97,12 +104,17 @@ export default function BillPage() {
             setEmailStatus("error");
         } finally {
             setSendingEmail(false);
-            // Clear localStorage after PDF generation and email attempt
-            localStorage.removeItem("if_pdf_need");
-            localStorage.removeItem("bookingData");
             localStorage.removeItem("userName");
+            // Consider also clearing the booking data after successful invoice creation
+            // localStorage.removeItem("bookingData");
+            // localStorage.removeItem("if_pdf_need");
         }
     };
+
+    // Format booking date if available
+    const formattedBookingDate = bookingData.bookingDate
+        ? new Date(bookingData.bookingDate).toLocaleString()
+        : new Date().toLocaleString();
 
     return (
         <div className="min-h-screen bg-gray-100 flex items-center justify-center p-8">
@@ -157,6 +169,9 @@ export default function BillPage() {
                             <p>
                                 <strong>Date:</strong> {new Date().toLocaleDateString()}{" "}
                                 {new Date().toLocaleTimeString()}
+                            </p>
+                            <p>
+                                <strong>Booking Date:</strong> {formattedBookingDate}
                             </p>
                         </div>
                     </div>
@@ -218,6 +233,17 @@ export default function BillPage() {
                             <span>@MegaCityCab</span>
                         </div>
                     </div>
+                </div>
+
+                {/* Add a button to manually download PDF if needed */}
+                <div className="mt-4 text-center">
+                    <button
+                        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 disabled:bg-gray-400"
+                        onClick={handleDownloadPDF}
+                        disabled={sendingEmail}
+                    >
+                        {sendingEmail ? "Processing..." : "Download Invoice"}
+                    </button>
                 </div>
             </div>
         </div>

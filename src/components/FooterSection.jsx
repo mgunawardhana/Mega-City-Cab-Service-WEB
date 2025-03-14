@@ -29,8 +29,8 @@ export default function FooterSection() {
                         <div>
                             <h2 className="text-xl font-bold">Mega City Cab Service</h2>
                             <p className="text-sm text-gray-500 mt-2">
-                                30 Great Peter St, WestMinister, <br/>
-                                London SW1P 2BJ, United Kingdom
+                                65 High Level Road, 06 <br/>
+                                Colombo, SL
                             </p>
                             {/* Social Media Links */}
                             <div className="flex space-x-4 mt-4">

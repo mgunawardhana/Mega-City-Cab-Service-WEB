@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { HiOutlineLocationMarker, HiOutlineShoppingCart, HiHeart } from "react-icons/hi";
+import { HiOutlineLocationMarker, HiOutlineShoppingCart } from "react-icons/hi";
 import api from "../services/services.js";
 import { GET_SUPPLEMENT_ENDPOINT } from "../services/routes/supplementRoute.js";
 
@@ -12,18 +12,15 @@ export default function ExploreComponent() {
     const fetchData = async () => {
         try {
             const response = await api.get(GET_SUPPLEMENT_ENDPOINT);
-
             console.log("Fetched Data sssssssssssssss:", response.data.result);
 
-            // Transform vehicle data to match the supplement structure
             const transformedData = response.data.result.map((item) => {
                 let media = item.vehicleImage;
 
-                // Check if the image is base64 without the prefix and prepend it
                 if (media && !media.startsWith("http") && !media.startsWith("data:image")) {
-                    media = `data:image/jpeg;base64,${media}`; // Adjust MIME type as needed
+                    media = `data:image/jpeg;base64,${media}`;
                 } else if (!media) {
-                    media = "https://via.placeholder.com/200"; // Default placeholder
+                    media = "https://via.placeholder.com/200";
                 }
 
                 return {
@@ -31,25 +28,21 @@ export default function ExploreComponent() {
                     name: `${item.make} ${item.model}`,
                     media,
                     description: `${item.color} ${item.yearOfManufacture} ${item.vehicleType}`,
-                    price: item.engineCapacity, // Example: Use engineCapacity as the price
+                    price: item.engineCapacity,
                     category: item.fuelType,
                     supplierName: item.ownerName,
-                    isAvailable: item.permitType === "Commercial", // Example condition
-                    rating: 5, // Example: Hardcoded for demo
+                    isAvailable: item.status === "AVAILABLE", // Updated condition based on status
+                    rating: 5,
                 };
             });
 
             setLoadSupplements(transformedData);
-
-            // Extract unique categories
             const uniqueCategories = ["All", ...new Set(transformedData.map((item) => item.category))];
             setCategories(uniqueCategories);
         } catch (error) {
             console.error("Error fetching data:", error);
         }
     };
-
-
 
     useEffect(() => {
         fetchData();
@@ -59,7 +52,6 @@ export default function ExploreComponent() {
         (supplement) => activeCategory === "All" || supplement.category === activeCategory
     );
 
-    // Popup Card Component
     const PopupCard = ({ product, onClose }) => (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div className="bg-white rounded-2xl shadow-xl w-[380px] p-6 relative">
@@ -87,29 +79,21 @@ export default function ExploreComponent() {
 
                 <p className="text-center text-2xl font-bold mb-4">{product.price || "N/A"}</p>
 
-                <div className="flex justify-center items-center gap-1 mb-4 text-center">
-                    <div className="flex items-center gap-1 bg-gray-100 px-3 py-1 rounded-lg shadow relative group">
+                <div className="flex justify-between items-center space-x-2">
+                    <button
+                        className="bg-black text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-gray-900 text-sm h-10"
+                    >
+                        <HiOutlineShoppingCart size={18} /> Book Now
+                    </button>
+
+                    <div className="flex items-center bg-gray-100 px-4 py-2 rounded-lg shadow text-sm h-10">
                         <img
                             src="https://img.icons8.com/?size=100&id=HxdvwPmtGaQL&format=png&color=000000"
                             alt="Verified Icon"
-                            className="w-6 h-6"
+                            className="w-5 h-5"
                         />
-                        <span className="text-green-500 font-semibold text-sm">VERIFIED</span>
-                        <span className="absolute bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs rounded-lg px-2 py-1">
-                            Verified by Mega City Cab Specialists.
-                        </span>
+                        <span className="text-green-500 font-semibold">VERIFIED</span>
                     </div>
-                </div>
-
-                <div className="flex justify-between items-center">
-                    <button
-                        className="bg-black text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-gray-900"
-                    >
-                        <HiOutlineShoppingCart size={20} /> Book Now
-                    </button>
-                    <button className="bg-gray-100 px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-gray-200">
-                        <HiHeart size={20} className="text-red-500" /> Add to Favorites
-                    </button>
                 </div>
             </div>
         </div>
@@ -118,7 +102,7 @@ export default function ExploreComponent() {
     return (
         <div className="container mx-auto px-6 py-10">
             <h2 className="text-4xl font-bold text-center">Explore more</h2>
-            <p className="text-gray-600 text-center mt-2">Let&#39;s go on an adventure</p>
+            <p className="text-gray-600 text-center mt-2">Let's go on an adventure</p>
 
             <div className="flex flex-wrap justify-center gap-3 mt-6">
                 {categories.map((category) => (

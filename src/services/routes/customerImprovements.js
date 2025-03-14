@@ -1,1 +1,1 @@
-export const CUSTOMER_PROGRESS = "v1/driver/fetch-all";
+export const CUSTOMER_PROGRESS = "v1/auth/get-all-users?page=0&size=10";

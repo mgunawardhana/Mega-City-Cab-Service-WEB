@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import api from "../services/services.js";
-import { BOOKING_STATUS_CHANGE, DRIVER_FILTER, FETCH_ID_BY_EMAIL } from "../services/routes/loadAllDrivers.js";
+import {
+    BOOKING_STATUS_CHANGE,
+    DRIVER_FILTER,
+    DRIVER_STATUS_CHANGE,
+    FETCH_ID_BY_EMAIL
+} from "../services/routes/loadAllDrivers.js";
+import {CUSTOMER_PROGRESS} from "../services/routes/customerImprovements.js";
 
 function DriverDashboard() {
     const [driverStatus, setDriverStatus] = useState(() => localStorage.getItem('driverStatus') || 'AVAILABLE');
@@ -68,7 +74,8 @@ function DriverDashboard() {
             driverStatus,
             timestamp: new Date().toLocaleString()
         };
-        console.log('Driver Status Update:', driverData);
+        const response = await api.put(`${DRIVER_STATUS_CHANGE}${selectedBookingNumber}/${driverData.driverStatus}`);
+        console.log('driverStatus:', driverStatus);
     };
 
     const handleNotificationClick = (notification) => {

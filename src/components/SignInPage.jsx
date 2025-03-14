@@ -5,8 +5,8 @@ import api from "../services/services.js";
 import { LOGIN } from "../services/routes/login.js";
 
 export default function SignInPage() {
-    const [email, setEmail] = useState("maneesha@gmail.com");
-    const [password, setPassword] = useState("maneesha@123");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
     const navigate = useNavigate();
 
     localStorage.setItem('email_key',email);
@@ -85,17 +85,17 @@ export default function SignInPage() {
                         Sign In
                     </button>
                 </form>
-                <div className="text-center text-sm my-4">Or continue with</div>
+                {/*<div className="text-center text-sm my-4">Or continue with</div>*/}
                 <div className="flex justify-center gap-4">
-                    <button className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200">
-                        <FaFacebookF className="text-blue-600" />
-                    </button>
-                    <button className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200">
-                        <FaTwitter className="text-blue-400" />
-                    </button>
-                    <button className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200">
-                        <FaGithub className="text-gray-800" />
-                    </button>
+                    {/*<button className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200">*/}
+                    {/*    <FaFacebookF className="text-blue-600" />*/}
+                    {/*</button>*/}
+                    {/*<button className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200">*/}
+                    {/*    <FaTwitter className="text-blue-400" />*/}
+                    {/*</button>*/}
+                    {/*<button className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200">*/}
+                    {/*    <FaGithub className="text-gray-800" />*/}
+                    {/*</button>*/}
                 </div>
             </div>
         </div>
